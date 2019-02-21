@@ -13,6 +13,10 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 180px 1fr;
   background-color: #f3f4f7;
+  box-shadow: 1px 1px 5px #d5d6dc;
+  &:hover {
+    box-shadow: 1px 1px 5px #aeaeae;
+  }
 `
 
 const Content = styled.div`
@@ -61,10 +65,9 @@ const CardInfo = ({ card, twoColumns = false }) => {
         }
         return 0
       })
-      .reduce((accumulator, currentValue) => accumulator + currentValue)
+      .reduce((accum, currentValue) => accum + currentValue)
     happiness = (hp / 10 + damage / 10 + 10 - weak) / 5
   }
-  console.log(hp, str, weak, damage, happiness)
 
   return (
     <Wrapper>

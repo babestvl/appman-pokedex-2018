@@ -26,18 +26,17 @@ class App extends Component {
 
   async componentDidMount() {
     const allCards = await CardApi.getAll()
-    console.log(allCards)
     this.setState({ cardList: allCards })
   }
 
   render() {
     const { cardList } = this.state
-    console.log(cardList)
+
     return (
-      <AppWrapper>
+      <AppWrapper id="app">
         <Title>My Pokedex</Title>
         <MyPokedex cards={cardList} />
-        <Footer />
+        <Footer cards={cardList} />
       </AppWrapper>
     )
   }
