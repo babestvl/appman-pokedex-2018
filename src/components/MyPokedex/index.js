@@ -2,19 +2,20 @@ import React from 'react'
 import styled from 'styled-components'
 import CardInfo from '../CardInfo'
 
-const Wrapper = styled.div`
+const ListGrid = styled.div`
   display: grid;
-  grid-row-gap: 16px;
-  margin-top: 80px;
-  padding: 16px 16px 66px 16px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 16px;
+  padding: 16px;
+  margin: 80px 0;
 `
 
 const MyPokedex = ({ cards }) => (
-  <Wrapper>
-    {cards.map(card => (
-      <CardInfo card={card} key={cards.id} />
+  <ListGrid>
+    {cards.map((card, index) => (
+      <CardInfo card={card} key={index} />
     ))}
-  </Wrapper>
+  </ListGrid>
 )
 
 export default MyPokedex

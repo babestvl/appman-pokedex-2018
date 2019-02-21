@@ -2,19 +2,19 @@ import React from 'react'
 import styled from 'styled-components'
 import CardInfo from '../CardInfo'
 
-const ListGrid = styled.div`
+const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 16px;
-  padding: 16px;
+  grid-row-gap: 16px;
+  margin: 80px 0;
+  padding: 16px 16px 66px 16px;
 `
 
 const CardList = ({ cards }) => (
-  <ListGrid>
-    {cards.map(card => (
-      <CardInfo card={card} key={cards.id} />
+  <Wrapper>
+    {cards.map((card, index) => (
+      <CardInfo card={card} key={index} />
     ))}
-  </ListGrid>
+  </Wrapper>
 )
 
 export default CardList

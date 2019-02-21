@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
 import CardApi from './lib/CardApi'
 import MyPokedex from './components/MyPokedex'
-import CardList from './components/CardList'
 import Footer from './components/Footer'
 
 const AppWrapper = styled.div`
@@ -18,13 +16,12 @@ const Title = styled.h1`
   margin: 0 0 50px 0;
   padding-top: 16px;
   text-align: center;
-  background-color: red;
+  background-color: #fff;
 `
 
 class App extends Component {
   state = {
     cardList: [],
-    
   }
 
   async componentDidMount() {
