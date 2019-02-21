@@ -1,25 +1,31 @@
 import React, { Component } from 'react'
-import './App.css'
+import styled from 'styled-components'
+import axios from 'axios'
+import CardApi from './lib/CardApi'
+import CardList from './components/CardList'
 
-const COLORS = {
-  Psychic: "#f8a5c2",
-  Fighting: "#f0932b",
-  Fairy: "#c44569",
-  Normal: "#f6e58d",
-  Grass: "#badc58",
-  Metal: "#95afc0",
-  Water: "#3dc1d3",
-  Lightning: "#f9ca24",
-  Darkness: "#574b90",
-  Colorless: "#FFF",
-  Fire: "#eb4d4b"
-}
-
+const AppWrapper = styled.div`
+  height: 100%;
+  overflow-y: auto;
+`
 class App extends Component {
+  state = {
+    cardList: [],
+  }
+
+  async componentDidMount() {
+    const allCards = await CardApi.getAll()
+    console.log(allCards)
+    this.setState({ cardList: allCards })
+  }
+
   render() {
+    const { cardList } = this.state
+    console.log(cardList)
     return (
-      <div className="App">
-      </div>
+      <AppWrapper>
+        <CardList cards={cardList} />
+      </AppWrapper>
     )
   }
 }
