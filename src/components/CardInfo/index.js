@@ -1,13 +1,10 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import Info from './Info'
-
-const Img = styled.img`
-  height: 100%;
-`
+import HappinessBar from './HappinessBar'
 
 const Wrapper = styled.div`
-  height: 250px;
+  height: 240px;
   width: 100%;
   padding: 8px;
   display: grid;
@@ -17,6 +14,10 @@ const Wrapper = styled.div`
   &:hover {
     box-shadow: 1px 1px 5px #aeaeae;
   }
+`
+
+const Img = styled.img`
+  height: 100%;
 `
 
 const Content = styled.div`
@@ -56,7 +57,7 @@ class CardInfo extends PureComponent {
     const { card, actionText, handleOnClick } = this.props
     const { isHover } = this.state
 
-    let hp = card.hp
+    let hp = card.hp || 0
     let str = 0
     let weak = 0
     let damage = 0
@@ -68,7 +69,7 @@ class CardInfo extends PureComponent {
     }
     if (card.attacks) {
       str = card.attacks.length * 50
-      weak = card.weaknesses.length * 100 || 0
+      weak = card.weaknesses.length * 100
       damage = card.attacks
         .map(attack => {
           if (attack.damage.match(/\d+/)) {
@@ -77,7 +78,7 @@ class CardInfo extends PureComponent {
           return 0
         })
         .reduce((accum, currentValue) => accum + currentValue)
-      happiness = (hp / 10 + damage / 10 + 10 - weak) / 5
+      happiness = (hp / 10 + damage / 10 + 10 - card.weaknesses.length) / 5
     }
 
     return (
@@ -98,6 +99,7 @@ class CardInfo extends PureComponent {
           <Info text="HP" value={hp} />
           <Info text="STR" value={str} />
           <Info text="WEAK" value={weak} />
+          <HappinessBar times={happiness} />
         </Content>
       </Wrapper>
     )

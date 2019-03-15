@@ -30,6 +30,7 @@ const StyledInput = styled.input`
   outline: none;
   font-size: 24px;
   font-family: 'Gaegu';
+  padding: 0 8px;
 `
 
 const StyledImg = styled.img`
@@ -53,7 +54,7 @@ const CardModal = ({
     overlayClassName="Overlay"
   >
     <Searchbar>
-      <StyledInput value={keyword} onChange={handleOnChangeKeyword} />
+      <StyledInput value={keyword} onChange={handleOnChangeKeyword} placeholder="Find pokemon" />
       <StyledImg src={SearchIcon} />
     </Searchbar>
     <CardList cards={cards} addCardToDeck={addCardToDeck} />
