@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import CardApi from './lib/CardApi'
 import MyPokedex from './components/MyPokedex'
 import Footer from './components/Footer'
+import CardModal from './components/CardModal'
 
 const AppWrapper = styled.div`
   height: 100%;
@@ -22,6 +23,9 @@ const Title = styled.h1`
 class App extends Component {
   state = {
     cardList: [],
+    myDeck: [],
+    keyword: '',
+    showModal: false,
   }
 
   async componentDidMount() {
@@ -29,14 +33,34 @@ class App extends Component {
     this.setState({ cardList: allCards })
   }
 
+  handleOpenModal = () => {
+    this.setState({ showModal: true })
+  }
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false })
+  }
+
+  handleOnChangeKeyword = ({ target: { value } }) => {
+    this.setState({ keyword: value })
+  }
+
   render() {
-    const { cardList } = this.state
+    const { showModal, cardList, myDeck, keyword } = this.state
 
     return (
       <AppWrapper id="app">
         <Title>My Pokedex</Title>
-        <MyPokedex cards={cardList} />
-        <Footer cards={cardList} />
+        <MyPokedex cards={myDeck} />
+        <Footer handleOpenModal={this.handleOpenModal} />
+        <CardModal
+          cards={cardList}
+          keyword={keyword}
+          search={this.search}
+          showModal={showModal}
+          handleCloseModal={this.handleCloseModal}
+          handleOnChangeKeyword={this.handleOnChangeKeyword}
+        />
       </AppWrapper>
     )
   }
