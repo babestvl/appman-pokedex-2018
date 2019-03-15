@@ -10,10 +10,15 @@ const ListGrid = styled.div`
   margin: 80px 0;
 `
 
-const MyPokedex = ({ cards }) => (
+const MyPokedex = ({ cards, removeCardFromDeck }) => (
   <ListGrid>
     {cards.map((card, index) => (
-      <CardInfo card={card} key={index} />
+      <CardInfo
+        card={card}
+        key={index}
+        handleOnClick={removeCardFromDeck}
+        actionText="X"
+      />
     ))}
   </ListGrid>
 )

@@ -31,7 +31,10 @@ class App extends Component {
   fetchCards = async keyword => {
     const { myDeck } = this.state
     const cards = await CardApi.fetchCards(keyword)
-    this.setState({ cardList: cards })
+    const remainCards = cards.filter(
+      item => myDeck.findIndex(card => item.id === card.id) === -1,
+    )
+    this.setState({ cardList: remainCards })
   }
 
   handleOpenModal = () => {
@@ -49,13 +52,25 @@ class App extends Component {
     this.fetchCards(value)
   }
 
+  addCardToDeck = card => {
+    const { myDeck, cardList } = this.state
+    const remainCards = cardList.filter(item => item.id !== card.id)
+    this.setState({ myDeck: [...myDeck, card], cardList: remainCards })
+  }
+
+  removeCardFromDeck = card => {
+    const { myDeck } = this.state
+    const newDeck = myDeck.filter(item => item.id !== card.id)
+    this.setState({ myDeck: newDeck })
+  }
+
   render() {
     const { showModal, cardList, myDeck, keyword } = this.state
 
     return (
       <AppWrapper id="app">
         <Title>My Pokedex</Title>
-        <MyPokedex cards={myDeck} />
+        <MyPokedex cards={myDeck} removeCardFromDeck={this.removeCardFromDeck} />
         <Footer handleOpenModal={this.handleOpenModal} />
         <CardModal
           cards={cardList}
@@ -64,6 +79,7 @@ class App extends Component {
           showModal={showModal}
           handleCloseModal={this.handleCloseModal}
           handleOnChangeKeyword={this.handleOnChangeKeyword}
+          addCardToDeck={this.addCardToDeck}
         />
       </AppWrapper>
     )

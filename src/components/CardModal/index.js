@@ -43,6 +43,7 @@ const CardModal = ({
   cards,
   keyword,
   handleOnChangeKeyword,
+  addCardToDeck,
 }) => (
   <StyledModal
     isOpen={showModal}
@@ -55,7 +56,7 @@ const CardModal = ({
       <StyledInput value={keyword} onChange={handleOnChangeKeyword} />
       <StyledImg src={SearchIcon} />
     </Searchbar>
-    <CardList cards={cards} />
+    <CardList cards={cards} addCardToDeck={addCardToDeck} />
   </StyledModal>
 )
 

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'styled-components'
-import { Line } from 'rc-progress'
+import Info from './Info'
 
 const Img = styled.img`
   height: 100%;
@@ -23,96 +23,85 @@ const Content = styled.div`
   padding: 8px;
 `
 
-const Info = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-`
-
 const Title = styled.span`
   font-size: 36px;
   font-family: 'Gaegu';
 `
 
-const Bar = styled.div`
-  width: ${props => (props.twoColumns ? '250px' : '120px')};
-  height: 20px;
+const TitleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
-const Name = styled.span`
-  width: 24px;
-  margin-right: 36px;
+const CardAction = styled.span`
+  font-size: 24px;
+  color: #dc7777;
+  cursor: pointer;
 `
 
-const CardInfo = ({ card, twoColumns = false }) => {
-  let hp = card.hp
-  let str = 0
-  let weak = 0
-  let damage = 0
-  let happiness = 0
-  if (hp === 'None') {
-    hp = 0
-  } else if (hp > 100) {
-    hp = 100
-  }
-  if (card.attacks) {
-    str = card.attacks.length * 50
-    weak = card.weaknesses.length * 100 || 0
-    damage = card.attacks
-      .map(attack => {
-        if (attack.damage.match(/\d+/)) {
-          return +attack.damage.match(/\d+/)[0]
-        }
-        return 0
-      })
-      .reduce((accum, currentValue) => accum + currentValue)
-    happiness = (hp / 10 + damage / 10 + 10 - weak) / 5
+class CardInfo extends PureComponent {
+  state = {
+    isHover: false,
   }
 
-  return (
-    <Wrapper>
-      <Img src={card.imageUrl} />
-      <Content>
-        <Title>{card.name}</Title>
-        <Info>
-          <Name>HP</Name>
-          <Bar twoColumns={twoColumns}>
-            <Line
-              percent={hp}
-              strokeWidth="20"
-              strokeColor="#f3701a"
-              trailWidth="20"
-              trailColor="#e4e4e4"
-            />
-          </Bar>
-        </Info>
-        <Info>
-          <Name>STR</Name>
-          <Bar twoColumns={twoColumns}>
-            <Line
-              percent={str}
-              strokeWidth="20"
-              strokeColor="#f3701a"
-              trailWidth="20"
-              trailColor="#e4e4e4"
-            />
-          </Bar>
-        </Info>
-        <Info>
-          <Name>WEAK</Name>
-          <Bar twoColumns={twoColumns}>
-            <Line
-              percent={weak}
-              strokeWidth="20"
-              strokeColor="#f3701a"
-              trailWidth="20"
-              trailColor="#e4e4e4"
-            />
-          </Bar>
-        </Info>
-      </Content>
-    </Wrapper>
-  )
+  handleMouseEnter = () => {
+    this.setState({ isHover: true })
+  }
+
+  handleMouseLeave = () => {
+    this.setState({ isHover: false })
+  }
+
+  render() {
+    const { card, actionText, handleOnClick } = this.props
+    const { isHover } = this.state
+
+    let hp = card.hp
+    let str = 0
+    let weak = 0
+    let damage = 0
+    let happiness = 0
+    if (hp === 'None') {
+      hp = 0
+    } else if (hp > 100) {
+      hp = 100
+    }
+    if (card.attacks) {
+      str = card.attacks.length * 50
+      weak = card.weaknesses.length * 100 || 0
+      damage = card.attacks
+        .map(attack => {
+          if (attack.damage.match(/\d+/)) {
+            return +attack.damage.match(/\d+/)[0]
+          }
+          return 0
+        })
+        .reduce((accum, currentValue) => accum + currentValue)
+      happiness = (hp / 10 + damage / 10 + 10 - weak) / 5
+    }
+
+    return (
+      <Wrapper
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
+        <Img src={card.imageUrl} />
+        <Content>
+          <TitleRow>
+            <Title>{card.name}</Title>
+            {isHover && (
+              <CardAction onClick={() => handleOnClick(card)}>
+                {actionText}
+              </CardAction>
+            )}
+          </TitleRow>
+          <Info text="HP" value={hp} />
+          <Info text="STR" value={str} />
+          <Info text="WEAK" value={weak} />
+        </Content>
+      </Wrapper>
+    )
+  }
 }
 
 export default CardInfo

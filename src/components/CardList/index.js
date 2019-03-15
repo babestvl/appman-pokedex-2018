@@ -8,10 +8,15 @@ const Wrapper = styled.div`
   padding: 16px 16px 66px 16px;
 `
 
-const CardList = ({ cards }) => (
+const CardList = ({ cards, addCardToDeck }) => (
   <Wrapper>
     {cards.map((card, index) => (
-      <CardInfo card={card} key={index} />
+      <CardInfo
+        card={card}
+        key={index}
+        handleOnClick={addCardToDeck}
+        actionText="Add"
+      />
     ))}
   </Wrapper>
 )
