@@ -28,12 +28,15 @@ class App extends Component {
     showModal: false,
   }
 
-  async componentDidMount() {
-    const allCards = await CardApi.getAll()
-    this.setState({ cardList: allCards })
+  fetchCards = async keyword => {
+    const { myDeck } = this.state
+    const cards = await CardApi.fetchCards(keyword)
+    this.setState({ cardList: cards })
   }
 
   handleOpenModal = () => {
+    const { keyword } = this.state
+    this.fetchCards(keyword)
     this.setState({ showModal: true })
   }
 
@@ -43,6 +46,7 @@ class App extends Component {
 
   handleOnChangeKeyword = ({ target: { value } }) => {
     this.setState({ keyword: value })
+    this.fetchCards(value)
   }
 
   render() {
